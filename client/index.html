@@ -4,203 +4,72 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Daily Dev Routine Tracker</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #f4f4f4;
-        padding: 20px;
-        color: #333;
-      }
-      h1 {
-        text-align: center;
-      }
-      .date-picker {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 20px;
-      }
-      input[type="date"] {
-        padding: 5px;
-        font-size: 1rem;
-      }
-      .habit {
-        background: white;
-        margin: 10px 0;
-        padding: 15px;
-        border-radius: 8px;
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
-        border: 1px solid #ddd;
-      }
-      .habit.completed {
-        background: #d4f8d4;
-        text-decoration: line-through;
-        opacity: 0.7;
-      }
-      .habit-info {
-        flex: 1;
-        margin-right: 10px;
-      }
-      .habit h3 {
-        margin: 0;
-      }
-      .habit p {
-        margin: 5px 0 0;
-        font-size: 0.9rem;
-        color: #666;
-      }
-      button {
-        padding: 8px 12px;
-        border: none;
-        background: #4caf50;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-      button.completed {
-        background: #999;
-      }
-    </style>
+    <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <h1>Daily Dev Routine</h1>
+    <div class="container">
+      <div id="authContainer">
+        <div id="loginView">
+          <h1>Login</h1>
+          <form id="loginForm" class="auth-form">
+            <input type="email" id="loginEmail" placeholder="Email" required />
+            <input
+              type="password"
+              id="loginPassword"
+              placeholder="Password"
+              required
+            />
+            <button type="submit">Login</button>
+          </form>
+          <p>
+            New user?
+            <span id="showRegister" class="toggle-auth">Register here</span>
+          </p>
+        </div>
+        <div id="registerView" class="hidden">
+          <h1>Register</h1>
+          <form id="registerForm" class="auth-form">
+            <input
+              type="text"
+              id="registerFirstName"
+              placeholder="First Name"
+            />
+            <input type="text" id="registerLastName" placeholder="Last Name" />
+            <input
+              type="email"
+              id="registerEmail"
+              placeholder="Email"
+              required
+            />
+            <input
+              type="password"
+              id="registerPassword"
+              placeholder="Password"
+              required
+            />
+            <button type="submit">Register</button>
+          </form>
+          <p>
+            Already have an account?
+            <span id="showLogin" class="toggle-auth">Login here</span>
+          </p>
+        </div>
+      </div>
 
-    <div class="date-picker">
-      <input type="date" id="datePicker" />
+      <div id="appContainer" class="hidden">
+        <header>
+          <h1>Daily Dev Routine</h1>
+          <button id="logoutBtn">Logout</button>
+        </header>
+        <div class="date-picker">
+          <input type="date" id="datePicker" />
+        </div>
+        <div id="habitList"></div>
+      </div>
+
+      <div id="messageArea"></div>
     </div>
 
-    <div id="habitList"></div>
-
-    <script>
-      const dailyDevHabit = [
-        {
-          id: 1,
-          habit: "Check Company Updates",
-          description: "Check Missed Updates on Slack and Emails,",
-        },
-        {
-          id: 2,
-          habit: "Check PRs",
-          description:
-            "Check Personal Open PRs and Check Conflicts if everything is fine,",
-        },
-        {
-          id: 3,
-          habit: "Know Your Products",
-          description:
-            "Spend time understanding the products you work with, their features, and their benefits.",
-        },
-        {
-          id: 4,
-          habit: "Find What You Can Do",
-          description:
-            "Read the documentation and explore the codebase to find ways to contribute.",
-        },
-        {
-          id: 5,
-          habit: "Improvements",
-          description:
-            "Identify areas for improvement in the codebase or processes and suggest changes.",
-        },
-        {
-          id: 6,
-          habit: "Emails",
-          description:
-            "Check and respond to emails, especially those related to work or projects.",
-        },
-        {
-          id: 7,
-          habit: "Read Tech Blogs",
-          description:
-            "Stay updated with the latest trends and technologies in your field by reading tech blogs.",
-        },
-        {
-          id: 8,
-          habit: "Learn New Skills",
-          description:
-            "Dedicate time to learning new programming languages, frameworks, or tools.",
-        },
-        {
-          id: 9,
-          habit: "Network with Peers",
-          description:
-            "Engage with colleagues and peers in discussions about projects, challenges, and solutions.",
-        },
-        {
-          id: 10,
-          habit: "Reflect on Daily Progress",
-          description:
-            "At the end of the day, reflect on what you accomplished and plan for tomorrow.",
-        },
-      ];
-
-      const habitList = document.getElementById("habitList");
-      const datePicker = document.getElementById("datePicker");
-
-      // Get today's date in yyyy-mm-dd format
-      function getTodayDateStr() {
-        const today = new Date();
-        return today.toISOString().split("T")[0];
-      }
-
-      // Load saved status for specific date
-      function getCompletedHabits(date) {
-        return (
-          JSON.parse(localStorage.getItem(`completedHabits_${date}`)) || []
-        );
-      }
-
-      function saveCompletedHabits(date, habits) {
-        localStorage.setItem(`completedHabits_${date}`, JSON.stringify(habits));
-      }
-
-      // Render habits for selected date
-      function renderHabits(date) {
-        let completedHabits = getCompletedHabits(date);
-        habitList.innerHTML = "";
-
-        dailyDevHabit.forEach((habit) => {
-          const habitDiv = document.createElement("div");
-          habitDiv.className =
-            "habit" + (completedHabits.includes(habit.id) ? " completed" : "");
-
-          const infoDiv = document.createElement("div");
-          infoDiv.className = "habit-info";
-          infoDiv.innerHTML = `<h3>${habit.habit}</h3><p>${habit.description}</p>`;
-
-          const btn = document.createElement("button");
-          btn.textContent = completedHabits.includes(habit.id)
-            ? "Completed"
-            : "Mark Done";
-          btn.className = completedHabits.includes(habit.id) ? "completed" : "";
-          btn.onclick = () => {
-            if (completedHabits.includes(habit.id)) {
-              completedHabits = completedHabits.filter(
-                (habitId) => habitId !== habit.id
-              );
-            } else {
-              completedHabits.push(habit.id);
-            }
-            saveCompletedHabits(date, completedHabits);
-            renderHabits(date);
-          };
-
-          habitDiv.appendChild(infoDiv);
-          habitDiv.appendChild(btn);
-          habitList.appendChild(habitDiv);
-        });
-      }
-
-      // On date change
-      datePicker.addEventListener("change", (e) => {
-        renderHabits(e.target.value);
-      });
-
-      // Initialize with today's date
-      const todayStr = getTodayDateStr();
-      datePicker.value = todayStr;
-      renderHabits(todayStr);
-    </script>
+    <script src="main.js"></script>
   </body>
 </html>

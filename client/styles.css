@@ -1,0 +1,153 @@
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
+  background: #f4f7f9;
+  padding: 20px;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
+/* --- Auth Section --- */
+#authContainer {
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.auth-form input {
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.auth-form button {
+  padding: 12px;
+  font-size: 1rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.auth-form button:hover {
+  background: #2980b9;
+}
+
+.toggle-auth {
+  color: #3498db;
+  cursor: pointer;
+  margin-top: 15px;
+  display: inline-block;
+}
+
+/* --- App Section --- */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#logoutBtn {
+  background: #e74c3c;
+}
+
+.date-picker {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+input[type="date"] {
+  padding: 8px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+.habit {
+  background: #ffffff;
+  margin: 10px 0;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  border: 1px solid #e0e0e0;
+  transition: all 0.2s;
+}
+
+.habit.completed {
+  background: #e8f5e9; /* Light green */
+  opacity: 0.8;
+}
+
+.habit-info h3 {
+  margin: 0;
+  text-decoration: none;
+}
+
+.habit.completed .habit-info h3,
+.habit.completed .habit-info p {
+  text-decoration: line-through;
+}
+
+.habit-info p {
+  margin: 5px 0 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+button {
+  padding: 8px 12px;
+  border: none;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevents button from shrinking */
+}
+
+.mark-btn {
+  background: #27ae60;
+}
+
+.mark-btn.completed {
+  background: #95a5a6;
+}
+
+.hidden {
+  display: none;
+}
+
+#messageArea {
+  text-align: center;
+  margin: 10px;
+  color: #e74c3c;
+  font-weight: bold;
+}
